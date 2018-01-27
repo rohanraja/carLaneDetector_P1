@@ -1,0 +1,2 @@
+def loadImg():
+    return None
