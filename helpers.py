@@ -97,3 +97,10 @@ def weighted_img(img, initial_img, alpha=0.8, beta=1., gamma=0.):
 
 def showimg(img):
     plt.imshow(img)
+
+def readImg(imgPath):
+    image = mpimg.imread(imgPath)
+    if image.dtype == np.float32:
+        image = np.uint8(image*255.0)
+
+    return image
