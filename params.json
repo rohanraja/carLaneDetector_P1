@@ -1,1 +1,1 @@
-{"images": "test_images/solidYellowCurve.jpg", "cannyLT": 120, "outputStage": "final", "blurKernalSize": 3, "cannyHT": 340}
+{"images": "test_images/solidYellowCurve2.jpg", "cannyLT": 80, "outputStage": "final", "blurKernalSize": 5, "cannyHT": 276}
