@@ -5,11 +5,20 @@ def detectLanes(img, params):
     blkrSize = params["blurKernalSize"]
     cht = params["cannyHT"]
     clt = params["cannyLT"]
+    stage = params["outputStage"]
 
-    blur_gray = gaussian_blur(grayscale(img), kernel_size=blkrSize)
+    gray = grayscale(img)
+    blur = gaussian_blur(gray, kernel_size=blkrSize)
        
     ht = cht
     lt = clt
-    canny_edges = canny(blur_gray, low_threshold=lt, high_threshold=ht)
+    canny_edges = canny(blur, low_threshold=lt, high_threshold=ht)
 
-    return canny_edges
+    outpDict = {
+            "final": canny_edges,
+            "blur": blur,
+            "gray": gray,
+            "canny": canny_edges,
+    }
+
+    return outpDict[stage]
