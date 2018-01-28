@@ -1,1 +1,1 @@
-{"blurKernalSize": 5, "cannyHT": 280, "cannyLT": 90, "images": "test_images/challenge1.png", "outputStage": "final"}
+{"blurKernalSize": 5, "cannyHT": 60, "cannyLT": 280, "bThresh": 197, "hThresh": 11, "hMinLineLen": 18, "hMaxLineGap": 10.8, "useBrightness": true, "images": "all", "outputStage": "final"}

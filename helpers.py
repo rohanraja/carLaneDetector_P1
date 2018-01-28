@@ -98,7 +98,12 @@ def weighted_img(img, initial_img, alpha=0.8, beta=1., gamma=0.):
 def showimg(img):
     plt.imshow(img)
 
+def getHSV(img):
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    return hsv
+
 def readImg(imgPath):
+    return cv2.imread(imgPath)
     image = mpimg.imread(imgPath)
     if image.dtype == np.float32:
         image = np.uint8(image*255.0)
