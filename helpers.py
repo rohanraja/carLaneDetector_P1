@@ -4,6 +4,7 @@ import matplotlib.image as mpimg
 import numpy as np
 import cv2
 import helpers
+import json
 
 def grayscale(img):
     """Applies the Grayscale transform
@@ -69,6 +70,20 @@ def draw_lines(img, lines, color=[255, 0, 0], thickness=2):
         for x1,y1,x2,y2 in line:
             cv2.line(img, (x1, y1), (x2, y2), color, thickness)
 
+def get_hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap):
+    """
+    `img` should be the output of a Canny transform.
+        
+    Returns an image with hough lines drawn.
+    """
+    lines = cv2.HoughLinesP(img, rho, theta, threshold, np.array([]), minLineLength=min_line_len, maxLineGap=max_line_gap)
+    return lines
+
+def draw_hough_lines(img, lines):
+    line_img = np.zeros((img.shape[0], img.shape[1], 3), dtype=np.uint8)
+    draw_lines(line_img, lines)
+    return line_img
+
 def hough_lines(img, rho, theta, threshold, min_line_len, max_line_gap):
     """
     `img` should be the output of a Canny transform.
@@ -109,3 +124,14 @@ def readImg(imgPath):
         image = np.uint8(image*255.0)
 
     return image
+
+
+def getParams():
+    with open('params.json', 'r') as fp:
+        hyperParams = {}
+        try:
+            hyperParams = json.load(fp)
+        except:
+            print("Failed loading params from params.json file!")
+
+    return hyperParams

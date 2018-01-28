@@ -1,4 +1,5 @@
 from helpers import *
+from Line import *
 
 def detectLanes(img, params):
 
@@ -35,11 +36,19 @@ def detectLanes(img, params):
     min_line_length = params.get("hMinLineLen", 20)
     max_line_gap = params.get("hMaxLineGap", 1)
 
-    houghImg = hough_lines(canny_edges, rho, theta, threshold, min_line_length, max_line_gap)
+    # houghImg = hough_lines(canny_edges, rho, theta, threshold, min_line_length, max_line_gap)
+
+
+    hLines = get_hough_lines(canny_edges, rho, theta, threshold, min_line_length, max_line_gap)
+    houghImg = draw_hough_lines(canny_edges, hLines)
+
+    for l in hLines:
+        ln = LineFromCVLine(l)
+        ln.draw(img)
 
 
     outpDict = {
-            "final": houghImg,
+            "final": img,
             "blur": blur,
             "gray": gray,
             "canny": canny_edges,
