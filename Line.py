@@ -30,7 +30,19 @@ class Line:
     def get_coords(self):
         return np.array([self.x1, self.y1, self.x2, self.y2])
 
-    def distance(self):
+
+    def distBetween(self, x1, x2, y1, y2):
+        return ((x1 - x2)**2  + (y1 - y2)**2 )
+
+
+    def distFromPoint(self, x, y):
+
+        d1 = self.distBetween(x,self.x1,y,self.y1)
+        d2 = self.distBetween(x,self.x2,y,self.y2)
+        return np.sqrt(min(d1, d2))
+
+
+    def length(self):
         return np.sqrt((self.x1 - self.x2)**2  + (self.y1 - self.y2)**2 )
 
     def set_coords(self, x1, y1, x2, y2):
@@ -39,13 +51,17 @@ class Line:
         self.x2 = x2
         self.y2 = y2
 
-    def draw(self, img, color=[255, 0, 0], thickness=3):
-
-        if self.distance() < 20:
-            return
+    def isValidLaneCandidate(self, params={}):
+        if self.length() < 20:
+            return False
 
         if not (0.5 <= np.abs(self.slope) <= 2):
-            return
+            return False
+
+        return True
+
+    def draw(self, img, color=[255, 0, 0], thickness=3):
+
         font = cv2.FONT_HERSHEY_SIMPLEX
         cv2.line(img, (self.x1, self.y1), (self.x2, self.y2), color, thickness)
 

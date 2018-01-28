@@ -42,13 +42,34 @@ def detectLanes(img, params):
     hLines = get_hough_lines(canny_edges, rho, theta, threshold, min_line_length, max_line_gap)
     houghImg = draw_hough_lines(canny_edges, hLines)
 
+    linedImg = np.copy(img)
+
+
+    lnValsLeft = []
+    lnValsRight = []
+
     for l in hLines:
         ln = LineFromCVLine(l)
-        ln.draw(img)
+        if(ln.isValidLaneCandidate(params)):
+                
+            lnVal = (540 - max(ln.y1, ln.y2) , ln.length(), ln.slope, ln)
+            if(ln.slope < 0):
+                lnValsLeft.append(lnVal)
+            else:
+                lnValsRight.append(lnVal)
+
+    lnValsLeft.sort(key=lambda x: x[0] + (1/x[1]))
+    lnValsRight.sort(key=lambda x: x[0] + 1/x[1])
+    #pp.pprint(lnValsLeft)
+    #pp.pprint(lnValsRight)
+
+    lnValsLeft[0][3].draw(linedImg)
+    lnValsRight[0][3].draw(linedImg)
+
 
 
     outpDict = {
-            "final": img,
+            "final": linedImg,
             "blur": blur,
             "gray": gray,
             "canny": canny_edges,
