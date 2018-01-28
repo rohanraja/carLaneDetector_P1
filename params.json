@@ -1,1 +1,1 @@
-{"blurKernalSize": 5, "cannyHT": 60, "cannyLT": 280, "bThresh": 197, "hThresh": 11, "hMinLineLen": 18, "hMaxLineGap": 10.8, "useBrightness": true, "images": "all", "outputStage": "final"}
+{"cannyLT": 280, "bThresh": 220, "hMinLineLen": 18, "useBrightness": true, "outputStage": "final", "blurKernalSize": 5, "cannyHT": 60, "images": "all", "hMaxLineGap": 10.8, "hThresh": 12}
