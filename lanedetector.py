@@ -65,8 +65,8 @@ def detectLanes(img, params):
 
     lnValsLeft[0][3].draw(linedImg)
     lnValsRight[0][3].draw(linedImg)
-    lnValsLeft[0][3].extrapolateTillBase(linedImg)
-    lnValsRight[0][3].extrapolateTillBase(linedImg)
+    lnValsLeft[0][3].extrapolateTillBase(linedImg, lnValsRight[0][3])
+    lnValsRight[0][3].extrapolateTillBase(linedImg, lnValsLeft[0][3])
 
 
 

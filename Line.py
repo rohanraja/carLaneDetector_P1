@@ -76,17 +76,26 @@ class Line:
     def solveForX(self, y):
         return (y - self.bias)/self.slope
 
-    def extrapolateTillBase(self, img, color=[255, 0, 0], thickness=3):
+    def extrapolateTillBase(self, img, othLine, color=[255, 0, 0], thickness=3):
 
         lowx = self.x1
         lowy = self.y1
+        highx = self.x2
+        highy = self.y2
 
         if self.y2 > self.y1:
             lowx = self.x2
             lowy = self.y2
+            highx = self.x1
+            highy = self.y1
 
         baseY = img.shape[0]
         baseX = int(self.solveForX(baseY))
 
+        midY = min(self.y1, self.y2, othLine.y1, othLine.y2)
+        midX = int(self.solveForX(midY))
+
         cv2.line(img, (lowx, lowy), (baseX, baseY), color, thickness)
+
+        cv2.line(img, (highx, highy), (midX, midY), color, thickness)
 
