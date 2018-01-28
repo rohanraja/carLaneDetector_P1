@@ -69,3 +69,24 @@ class Line:
 
         # cv2.putText(img,"%.2f"%self.slope, midPoint, cv2.FONT_HERSHEY_PLAIN, 2, (200,233,250), 2)
 
+
+    def solveForY(self, x):
+        return self.slope*x + self.bias
+
+    def solveForX(self, y):
+        return (y - self.bias)/self.slope
+
+    def extrapolateTillBase(self, img, color=[255, 0, 0], thickness=3):
+
+        lowx = self.x1
+        lowy = self.y1
+
+        if self.y2 > self.y1:
+            lowx = self.x2
+            lowy = self.y2
+
+        baseY = img.shape[0]
+        baseX = int(self.solveForX(baseY))
+
+        cv2.line(img, (lowx, lowy), (baseX, baseY), color, thickness)
+

@@ -58,13 +58,15 @@ def detectLanes(img, params):
             else:
                 lnValsRight.append(lnVal)
 
-    lnValsLeft.sort(key=lambda x: x[0] + (1/x[1]))
-    lnValsRight.sort(key=lambda x: x[0] + 1/x[1])
+    lnValsLeft.sort(key=lambda x: x[0] + 1000/x[1])
+    lnValsRight.sort(key=lambda x: x[0] + 1000/x[1])
     #pp.pprint(lnValsLeft)
     #pp.pprint(lnValsRight)
 
     lnValsLeft[0][3].draw(linedImg)
     lnValsRight[0][3].draw(linedImg)
+    lnValsLeft[0][3].extrapolateTillBase(linedImg)
+    lnValsRight[0][3].extrapolateTillBase(linedImg)
 
 
 
