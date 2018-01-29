@@ -20,6 +20,8 @@ class Line:
 
         self.slope = self.compute_slope()
         self.bias = self.compute_bias()
+        self.theta = np.arctan(self.slope)
+
 
     def compute_slope(self):
         return (self.y2 - self.y1) / (self.x2 - self.x1 + np.finfo(float).eps)
@@ -60,7 +62,7 @@ class Line:
 
         return True
 
-    def draw(self, img, color=[255, 0, 0], thickness=3):
+    def draw(self, img, color=[255, 0, 0], thickness=30):
 
         font = cv2.FONT_HERSHEY_SIMPLEX
         cv2.line(img, (self.x1, self.y1), (self.x2, self.y2), color, thickness)
@@ -76,7 +78,7 @@ class Line:
     def solveForX(self, y):
         return (y - self.bias)/self.slope
 
-    def extrapolateTillBase(self, img, othLine, color=[255, 0, 0], thickness=3):
+    def extrapolateTillBase(self, img, othLine, params, color=[255, 0, 0], thickness=30):
 
         lowx = self.x1
         lowy = self.y1
@@ -92,8 +94,12 @@ class Line:
         baseY = img.shape[0]
         baseX = int(self.solveForX(baseY))
 
-        midY = min(self.y1, self.y2, othLine.y1, othLine.y2)
+        midY = min(self.y1, self.y2, othLine.y1, othLine.y2, int(baseY/1.5))
         midX = int(self.solveForX(midY))
+
+
+        self.lowPoint = (baseX, baseY)
+        self.highPoint = (midX, midY)
 
         cv2.line(img, (lowx, lowy), (baseX, baseY), color, thickness)
 
