@@ -7,9 +7,8 @@
 
 ### 1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
 
-####Finding approximate 2-d lines equation corresponding to both the lanes:
 
-1. Instead of using gray image, I converted the images to **HSV** format and picked up the *Variance* values for those pixels whose *Variance*/*Brightness* was more than approximately *200*. This reduced the image to mostly bright yellow and white colors, which usually belong to the lanes. This step reduced noisy pixels from the image.
+1. First step in the pipeline was to remove as much unwanted information as possible. For this, I converted the images to **HSV** format and picked up the *Variance* values for those pixels whose *Variance* or *Brightness* was more than approximately *200*. This reduced the image to mostly bright yellow and white colors, which usually belong to the lanes.
 ![HSV Filter](writeup_images/hsvfilter.png "Applying HSV Variance filter")
 
 2. In order to find **hough lines**, next step was to find the **canny edges** on the above reduced image after applying the **gaussian blur** filter.
@@ -28,6 +27,10 @@
 4. On finding the approximate line segment for each lane, next step was to extrapolate both the lines starting from the image base up to maximum height possible. The maximum height was calulated as **max** **(*height of left lane*, *height of right lane*, *total height / 1.5* )**.
 ![HSV Filter](writeup_images/approxLanes.png "Extrapolated Lines")
 
+### Parameters Tuning:
+
+For find the best set of parameters possible, I developed a small Jupyter Notebook (***Interactive_Params_Tuning.ipynb***) and leveraged Jupyter Notebook's UI Interaction widgets to develop an interface where I could perform quick trial and error experiments of altering all the hyper parameters involved in the pipeline.
+![HSV Filter](writeup_images/paramTuning.png "Extrapolated Lines")
 
 
 ### 2. Identify potential shortcomings with your current pipeline
