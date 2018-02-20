@@ -5,6 +5,11 @@ import cv2
 def LineFromCVLine(l):
     return Line(l[0][0], l[0][1], l[0][2], l[0][3])
 
+def LineFromSlopeBias(slope, bias, ylow, yhigh):
+    xlow =  (ylow - bias)/slope
+    xhigh =  (yhigh - bias)/slope
+    return Line(xlow, ylow, xhigh, yhigh)
+
 class Line:
     """
     A Line is defined from two points (x1, y1) and (x2, y2) as follows:
@@ -62,15 +67,19 @@ class Line:
 
         return True
 
-    def draw(self, img, color=[255, 0, 0], thickness=30):
+    def draw(self, img, params = {}):
 
-        font = cv2.FONT_HERSHEY_SIMPLEX
-        cv2.line(img, (self.x1, self.y1), (self.x2, self.y2), color, thickness)
+        color = [255,0,0]
+        thickness = params.get("maskLineThickness", 5)
+        try:
+            cv2.line(img, (self.x1, self.y1), (self.x2, self.y2), color, thickness)
+        except:
+            print("Invalid img or some error in drawing extrapolated line")
 
-        midPoint = (int((self.x1+self.x2)/2),int((self.y1+self.y2)/2 ))
 
-        # cv2.putText(img,"%.2f"%self.slope, midPoint, cv2.FONT_HERSHEY_PLAIN, 2, (200,233,250), 2)
 
+    def xIntercept(self):
+        return self.solveForX(0)
 
     def solveForY(self, x):
         return self.slope*x + self.bias
@@ -78,7 +87,36 @@ class Line:
     def solveForX(self, y):
         return (y - self.bias)/self.slope
 
-    def extrapolateTillBase(self, img, othLine, params, color=[255, 0, 0], thickness=30):
+    def extrapolate(self, img, midY, params):
+
+        color = [255,0,0]
+        thickness = params.get("maskLineThickness", 15)
+
+        lowx = self.x1
+        lowy = self.y1
+        highx = self.x2
+        highy = self.y2
+
+        if self.y2 > self.y1:
+            lowx = self.x2
+            lowy = self.y2
+            highx = self.x1
+            highy = self.y1
+
+        baseY = img.shape[0]
+        baseX = int(self.solveForX(baseY))
+        midX = int(self.solveForX(midY))
+
+        self.lowPoint = (baseX, baseY)
+        self.highPoint = (midX, midY)
+
+        try:
+            cv2.line(img, (baseX, baseY), (midX, midY), color, thickness)
+        except:
+            print("Invalid img or some error in drawing extrapolated line")
+
+
+    def extrapolateTillBase(self, img, othLine, params, color=[255, 0, 0], thickness=20):
 
         lowx = self.x1
         lowy = self.y1
@@ -101,7 +139,8 @@ class Line:
         self.lowPoint = (baseX, baseY)
         self.highPoint = (midX, midY)
 
-        cv2.line(img, (lowx, lowy), (baseX, baseY), color, thickness)
+        cv2.line(img, (baseX, baseY), (midX, midY), color, thickness)
+        # cv2.line(img, (lowx, lowy), (baseX, baseY), color, thickness)
 
-        cv2.line(img, (highx, highy), (midX, midY), color, thickness)
+        # cv2.line(img, (highx, highy), (midX, midY), color, thickness)
 

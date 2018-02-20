@@ -17,22 +17,22 @@
 
 3. The bunch of hough lines calculated in the previous step contained atleast one line corresponding to each lane. To find the line which best represented a lane:
 	
-	3.a) Firstly, I filterd all the lines based on the following criteria:
+	*3.a)* Firstly, I filterd all the lines based on the following criteria:
 	1. The magnitude of the **slope** should be between approximate *30 degrees* to *60 degrees* (Experimentally determined values)
 	2. The **length** of the line segment should be greator than *20 pixels*
 
-	3.b) Secondly, I categorized all lines having **negative** slope to the left lane and **positive** slope to the right.
+	*3.b)* Secondly, I categorized all lines having **negative** slope to the left lane and **positive** slope to the right.
 	
-	3.c) Thirdly, for each lane side, I picked up one best estimate line by sorting all the candidate lines based on their **distance from the base line** of the image ( lines closer to the base preferred ) and based on the **length of the line segment** ( larger line length preferred ).
-4. On finding the approximate line segment for each lane, next step was to extrapolate both the lines starting from the image base up to maximum height possible. The maximum height was calulated as **max** **(*height of left lane*, *height of right lane*, *total height / 1.5* )**.
+	*3.c)* Thirdly, for each lane side, I picked up one best estimate line by sorting all the candidate lines based on their **distance from the base line** of the image ( lines closer to the base preferred ) and based on the **length of the line segment** ( larger line length preferred ).
+4. On finding the approximate line segment for each lane, next step was to extrapolate both the lines starting from the image base up to maximum height possible. The maximum height was calulated as **max** **(*height of left lane*, *height of right lane*, *image height / 1.5* )**. Extrapolation was performed by finding the equation of the line in a 2d plane (see *Line.py*) and then calculating two end points of the full extrapolated line using this equation.
 ![HSV Filter](writeup_images/approxLanes.png "Extrapolated Lines")
 
 ### Parameters Tuning:
 
-For find the best set of parameters possible, I developed a small Jupyter Notebook (***Interactive_Params_Tuning.ipynb***) and leveraged Jupyter Notebook's UI Interaction widgets to develop an interface where I could perform quick trial and error experiments of altering all the hyper parameters involved in the pipeline.
+For determining the best set of parameters possible, I developed a small Jupyter Notebook (***Interactive_Params_Tuning.ipynb***) and leveraged Jupyter Notebook's UI Interaction widgets to develop an interface where I could perform quick trial and error experiments of altering all the hyper parameters involved in the pipeline and immediately see the changes in all of the test images. I played around with the paramters until I saw best results in all of the test images.
 ![HSV Filter](writeup_images/paramTuning.png "Extrapolated Lines")
 
-
+--
 ### 2. Identify potential shortcomings with your current pipeline
 
 
@@ -41,7 +41,7 @@ Following are the shortcoming with this approach:
 1. **Bright objects near lanes**: Any bright white/yellow car or a road spot could be incorrectly filtered as possible lane line pixel area and can deviate the detected line from the actual lane.
 2. **Extrapolation ignores curved roads**: Since extrapolation assumes that lanes are straight lines, any curves in the lanes won't be detected and will be deviated from the extrapolation of the line segments.
 
-
+--
 
 ### 3. Suggest possible improvements to your pipeline
 
