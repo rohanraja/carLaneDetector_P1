@@ -1,6 +1,9 @@
 import numpy as np
 import cv2
 
+# Got this Line class idea from https://raw.githubusercontent.com/ndrplz/self-driving-car/master/project_1_lane_finding_basic/Line.py
+# Extended functionality of this class
+
 
 def LineFromCVLine(l):
     return Line(l[0][0], l[0][1], l[0][2], l[0][3])
